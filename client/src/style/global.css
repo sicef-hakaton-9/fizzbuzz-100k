@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+:root{
+  --red: #fa0a32;
+  --yellow: #ff9c1c;
+  --blue: #4860f8;
+  --green: #16c784;
+  --purple: #d70466;
+  --gray: #cfcece;
+  --blacker-gray: #686767;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+html {
+	-webkit-tap-highlight-color: transparent;
+  font-size: 62.5%;
+}
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+main{
+  width: 100%;
+}
+
+#root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+input[type="checkbox"] {
+  accent-color: #000;
+}
