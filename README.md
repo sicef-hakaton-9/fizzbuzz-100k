@@ -1,4 +1,4 @@
-# Aplikacija „<naziv_aplikacije>”
+# Aplikacija „Smart Ride”
 
 ## Tim „FizzBuzz 100k”
 
@@ -23,9 +23,9 @@ Na primer odgovoriti na neka od sledeća pitanja:
 ## Tehnologije
 
 <!--
-- JavaScript
+- Laravel
+- React
 - MySQL
-- PHP
 - ...
 -->
 
