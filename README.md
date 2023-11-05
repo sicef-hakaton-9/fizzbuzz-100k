@@ -22,12 +22,9 @@ Na primer odgovoriti na neka od sledeća pitanja:
 
 ## Tehnologije
 
-<!--
 - Laravel
 - React
 - MySQL
-- ...
--->
 
 ## Uputstvo za pokretanje
 
