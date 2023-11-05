@@ -29,6 +29,7 @@ class LeaderboardController extends Controller
                 'total_time' => $user->total_time,
                 'hours' => floor($user->total_time / 60),
                 'minutes' => $user->total_time % 60,
+                'hours_to_add' => $this->hoursToAdd($user->total_time),
             ];
         });
 
@@ -36,5 +37,26 @@ class LeaderboardController extends Controller
             'status' => 'success',
             'users' => collect($users)->sortByDesc('total_time'),
         ]);
+    }
+
+    private function hoursToAdd($totalTime) {
+        $hoursToAdd = 0;
+
+        switch($totalTime) {
+            case $totalTime > 60 * 30:
+                $hoursToAdd = '4h';
+                break;
+            case $totalTime > 60 * 25:
+                $hoursToAdd = '3h';
+                break;
+            case $totalTime > 60 * 20:
+                $hoursToAdd = '2h';
+                break;
+            case $totalTime > 60 * 10:
+                $hoursToAdd = '30 min';
+                break;
+        }
+
+        return $hoursToAdd;
     }
 }
