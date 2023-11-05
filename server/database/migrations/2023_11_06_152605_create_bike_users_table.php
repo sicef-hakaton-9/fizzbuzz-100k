@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('starting_parking_lot_id')->references('id')->on('parking_lots');
             $table->foreign('ending_parking_lot_id')->references('id')->on('parking_lots');
 
-            $table->timestamp('starts_at');
+            $table->timestamp('starts_at')->nullable();
             $table->timestamp('ends_at')->nullable();
 
             $table->timestamps();

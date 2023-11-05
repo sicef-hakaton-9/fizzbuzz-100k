@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\RemoveBikeReservationJob;
 use App\Models\Bike;
 use App\Models\BikeUser;
 use App\Models\ParkingLot;
@@ -14,6 +15,14 @@ class BikeRentController extends Controller
     {
         $user = $request->user();
 
+        // Check if the user has an active subscription
+        if(! $user->hasActiveSubscription()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User has no active subscription',
+            ], 409);
+        }
+
         // Check if the bike is already allocated
         if(BikeUser::where('bike_id', '=', $bike->id)->where('ends_at', '=', null)->exists()) {
             return response()->json([
@@ -22,9 +31,18 @@ class BikeRentController extends Controller
             ], 409);
         }
 
-        // Fuction that allocates bike to the user
-        $user->rent($bike);
+        if($user->hasReservation()) {
+            // Get reserved bike for the user and remove reservation
+            $reservedBike = $user->getReservedBike();
 
+            $user->rent($reservedBike);
+            $reservedBike->removeReservation();
+
+        } else {
+            // Fuction that allocates bike to the user
+            $user->rent($bike);
+        }
+    
         // send microcontroller command to unlock the bike
 
         return response()->json([
@@ -41,6 +59,14 @@ class BikeRentController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
         ]);
+
+        // Check if the user has an active subscription
+        if(! $user->hasActiveSubscription()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User has no active subscription',
+            ], 409);
+        }
 
         // Check if the user has a bike allocated
         if(! $user->bikeUsers()->where('ends_at', '=', null)->exists()) {
@@ -60,8 +86,35 @@ class BikeRentController extends Controller
             ], 409);
         }
 
-        // Function that finishes the rent
-        $user->finishRide($destinationParkingLot);
+        if($user->hasDestionationReservation() && $user->parkingLot->id == $destinationParkingLot->id) {
+            // Get reserved parking lot for the user and remove reservation
+            $reservedParkingLot = $user->parkingLot;
+
+            $user->finishRide($reservedParkingLot, false);
+            $user->removeLocationReservation();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Bike returned successfully',
+            ], 201);
+        }
+
+       if($user->hasDestionationReservation() && $user->parkingLot->id != $destinationParkingLot->id) {
+            // Get reserved parking lot for the user and remove reservation
+            $reservedParkingLot = $user->parkingLot;
+            $reservedParkingLot->returnBikeSpace();
+
+            $user->finishRide($destinationParkingLot, true);
+            $user->removeLocationReservation();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Bike returned successfully',
+            ], 201);
+        }
+
+        // If the user has no reservation, return the bike to the closest parking lot
+        $user->finishRide($destinationParkingLot, true);
 
         // send microcontroller command to lock the bike
         
@@ -85,6 +138,48 @@ class BikeRentController extends Controller
             ->first();
 
         return ParkingLot::find($closestParkingLot->id);
+    }
+
+    public function reserve(Request $request, ParkingLot $parkingLot)
+    {
+        $user = $request->user();
+
+        // Check if the user has an active subscription
+        if(! $user->hasActiveSubscription()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User has no active subscription',
+            ], 409);
+        }
+
+         // Check if the user has a bike allocated
+        if($user->bikeUsers()->where('ends_at', '=', null)->exists() || $user->hasReservation()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User has no bike rented',
+            ], 409);
+        }
+
+        $bike = Bike::where('parking_lot_id', '=', $parkingLot->id)->first();
+
+        if(! $bike) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No bikes available',
+            ], 409);
+        }
+
+        // Function that reserves the bike
+        $user->reserve($bike);
+
+        // call job to remove reservation after 1 minute
+        RemoveBikeReservationJob::dispatch($bike)
+            ->delay(now()->addMinutes(1));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Bike reserved successfully',
+        ], 201);
     }
 
 }

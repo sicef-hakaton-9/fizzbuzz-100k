@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('bikes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parking_lot_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->foreign('parking_lot_id')->references('id')->on('parking_lots');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('code', 5)->unique();
             $table->timestamps();

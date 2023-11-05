@@ -17,4 +17,28 @@ class ParkingLot extends Model
         'longitude',
         'latitude'
     ];
+
+    /**
+     * Reserve parking lot space
+     */
+    public function reserve(User $user)
+    {
+        $user->update([
+            'parking_lot_id' => $this->id,
+        ]);
+
+        $this->update([
+            'free_spaces' => $this->free_spaces - 1,
+        ]);
+    }
+
+    /**
+     * Return parking lot space
+     */
+    public function returnBikeSpace()
+    {
+        $this->update([
+            'free_spaces' => $this->free_spaces + 1,
+        ]);
+    }
 }

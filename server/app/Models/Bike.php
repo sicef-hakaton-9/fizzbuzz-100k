@@ -15,6 +15,7 @@ class Bike extends Model
         'id',
         'code',
         'parking_lot_id',
+        'user_id',
     ];
 
     /**
@@ -35,5 +36,15 @@ class Bike extends Model
     public function parkingLot(): BelongsTo
     {
         return $this->belongsTo(ParkingLot::class);
+    }
+
+    /**
+     * Remove reservation for the bike
+     */
+    public function removeReservation() 
+    {
+        return $this->update([
+            'user_id' => null,
+        ]);
     }
 }

@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ParkingLotSeeder::class,
             BikeSeeder::class,
-            SubscriptionSeeder::class,
             PlanSeeder::class,
+            SubscriptionSeeder::class,
         ]);
     }
 }

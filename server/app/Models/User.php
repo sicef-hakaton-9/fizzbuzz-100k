@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use App\Models\Subscription;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -26,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'phone',
         'password',
+        'parking_lot_id',
     ];
 
     /**
@@ -78,6 +81,46 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(BikeUser::class,);
     }
 
+    /**
+     * Get the user that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the subcription associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
+     * Get the last created subscription associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(Subscription::class)->whereNull('timestamp_end')->latest();
+    }
+
+    /**
+     * Get the parkingLot that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parkingLot(): BelongsTo
+    {
+        return $this->belongsTo(ParkingLot::class);
+    }
+
     public function rent(Bike $bike)
     {
         if($this->bikeUsers()->where('ends_at', '=', null)->exists()) {
@@ -91,11 +134,11 @@ class User extends Authenticatable implements JWTSubject
             $this->bikeUsers()->create([
                 'bike_id' => $bike->id,
                 'starting_parking_lot_id' => $bike->parking_lot_id,
-                'starts_at' => now(),
+                'starts_at' => Carbon::now()->toDateTime(),
             ]);
             
             $bike->parkingLot()->update([
-                'free_spaces' => $bike->parkingLot->free_spaces - 1,
+                'free_spaces' => $bike->parkingLot->free_spaces + 1,
             ]);
 
             $bike->parking_lot_id = null;
@@ -111,7 +154,7 @@ class User extends Authenticatable implements JWTSubject
         return true;
     }
 
-    public function finishRide(ParkingLot $parkingLot)
+    public function finishRide(ParkingLot $parkingLot, bool $decrementSpaces)
     {
         $bikeUser = $this->bikeUsers()->where('ends_at', '=', null)->first();
 
@@ -123,16 +166,23 @@ class User extends Authenticatable implements JWTSubject
         }
 
         try {
-            $bikeUser->ends_at = now();
+
+            $bikeUser->ends_at = Carbon::now();
             $bikeUser->ending_parking_lot_id = $parkingLot->id;
             $bikeUser->save();
             
-            $parkingLot->update([
-                'free_spaces' => $parkingLot->free_spaces + 1,
-            ]);
+            if($decrementSpaces) {
+                $parkingLot->update([
+                    'free_spaces' => $parkingLot->free_spaces - 1,
+                ]);
+            }
             
             $bikeUser->bike->parking_lot_id = $parkingLot->id;
             $bikeUser->bike->save();
+
+            $this->subscription()->update([
+                'time_left' => $this->subscription->time_left - $bikeUser->duration(),
+            ]);
         }
         catch(\Exception $e) {
             return response()->json([
@@ -142,5 +192,73 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return true;
+    }
+
+    /**
+     * Get the subscription associated with the User
+     */
+    public function hasActiveSubscription() 
+    {
+        return  $this->subscription()->exists();
+    }
+
+    /**
+     * Check if user has active reservation
+     */
+    public function hasReservation()
+    {
+        return Bike::where('user_id', '=', $this->id)->exists();
+    }
+
+    /**
+     * Reserve bike for the user
+     */
+    public function reserve(Bike $bike)
+    {
+        return $bike->update([
+            'user_id' => $this->id,
+        ]);
+    }
+
+    /**
+     * Get reserved bike
+     */
+    public function getReservedBike()
+    {
+        return Bike::where('user_id', $this->id)->first();
+    }
+
+    /**
+     * Check if user has active ride
+     */
+    public function hasActiveRide()
+    {
+        return $this->bikeUsers()->where('ends_at', '=', null)->exists();
+    }
+
+    /**
+     * Get active ride
+     */
+    public function getActiveRide()
+    {
+        return $this->bikeUsers()->where('ends_at', '=', null)->first();
+    }
+
+    /**
+     * Check if user has destination reservation
+     */
+    public function hasDestionationReservation()
+    {
+        return $this->parkingLot()->exists();
+    }
+
+    /**
+     * Remove destination reservation
+     */
+    public function removeLocationReservation()
+    {
+        return $this->update([
+            'parking_lot_id' => null,
+        ]);
     }
 }
