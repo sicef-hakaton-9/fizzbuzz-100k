@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Plan;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PlanSeeder extends Seeder
@@ -15,23 +14,23 @@ class PlanSeeder extends Seeder
     {
         Plan::create([
             'name' => 'Obican plan',
-            'description' => 'Ovo je opis Obicnog plana',
-            'minutes' => '1000',
-            'price' => '300'
+            'description' => 'Ovo je opis obicnog plana',
+            'minutes' => '300', // 5 sati
+            'price' => '750' // 150 dinara po satu
         ]);
 
         Plan::create([
             'name' => 'Bolji plan',
-            'description' => 'Ovo je opis Boljeg plana',
-            'minutes' => '1800',
-            'price' => '500'
+            'description' => 'Ovo je opis boljeg plana',
+            'minutes' => '600', // 10 sati
+            'price' => '1300' // 130 dinara po satu
         ]);
 
         Plan::create([
-            'name' => 'Jos Bolji plan',
-            'description' => 'Ovo je opis Jos Boljeg plana',
-            'minutes' => '3600',
-            'price' => '1000'
+            'name' => 'Jos bolji plan',
+            'description' => 'Ovo je opis jos boljeg plana',
+            'minutes' => '1800', // 30 sati
+            'price' => '2400' // 80 dinara po satu
         ]);
     }
 }

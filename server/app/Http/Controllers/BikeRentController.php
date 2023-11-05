@@ -156,7 +156,7 @@ class BikeRentController extends Controller
         if($user->bikeUsers()->where('ends_at', '=', null)->exists() || $user->hasReservation()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'User has no bike rented',
+                'message' => 'User already has bike rented',
             ], 409);
         }
 
@@ -172,12 +172,13 @@ class BikeRentController extends Controller
         // Function that reserves the bike
         $user->reserve($bike);
 
-        // call job to remove reservation after 1 minute
+        // call job to remove reservation after 15 minute
         RemoveBikeReservationJob::dispatch($bike)
-            ->delay(now()->addMinutes(1));
+            ->delay(now()->addMinutes(15));
 
         return response()->json([
             'status' => 'success',
+            'bikeCode' => $bike->code,
             'message' => 'Bike reserved successfully',
         ], 201);
     }

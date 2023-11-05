@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ParkingLot;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ParkingLotSeeder extends Seeder
@@ -35,6 +34,30 @@ class ParkingLotSeeder extends Seeder
             'free_spaces' => 9,
             'longitude' => '21.89667', 
             'latitude' => '43.31787',
+        ]);
+
+        ParkingLot::create([
+            'name' => 'Železnička stanica',
+            'total_spaces' => 10,
+            'free_spaces' => 9,
+            'longitude' => '21.87744', 
+            'latitude' => '43.31617',
+        ]);
+
+        ParkingLot::create([
+            'name' => 'Delta Planet Niš',
+            'total_spaces' => 10,
+            'free_spaces' => 9,
+            'longitude' => '21.91704', 
+            'latitude' => '43.324370',
+        ]);
+
+        ParkingLot::create([
+            'name' => 'Aerodrom Konstantin Veliki',
+            'total_spaces' => 10,
+            'free_spaces' => 9,
+            'longitude' => '21.866191', 
+            'latitude' => '43.338099',
         ]);
     }
 }

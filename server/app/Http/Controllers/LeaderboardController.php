@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 
-class DashboardController extends Controller
+class LeaderboardController extends Controller
 {
     public function index()
     {   
@@ -27,6 +27,8 @@ class DashboardController extends Controller
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'total_time' => $user->total_time,
+                'hours' => floor($user->total_time / 60),
+                'minutes' => $user->total_time % 60,
             ];
         });
 

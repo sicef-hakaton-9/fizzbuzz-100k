@@ -14,21 +14,23 @@ class RemoveBikeReservationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private Bike $bike;
+    
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(Bike $bike)
     {
-        //
+        $this->bike = $bike;
     }
 
     /**
      * Execute the job.
      */
-    public function handle(Bike $bike): void
+    public function handle(): void
     {
-        if($bike->user_id !== null) {
-            $bike->removeReservation();
+        if($this->bike->user_id !== null) {
+            $this->bike->removeReservation();
         }
     }
 }

@@ -40,6 +40,7 @@ class ParkingLotController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Parking lot reserved successfully',
+            'parkingLotId' => $parkingLot->id,
         ]);
     }
 }
