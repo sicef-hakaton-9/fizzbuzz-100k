@@ -7,7 +7,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleGoRegister = () => {
-    navigate("/create-acc");
+    navigate("/sign-in");
   };
   return (
     <header className={styles.header}>
