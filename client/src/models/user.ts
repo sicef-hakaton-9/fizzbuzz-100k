@@ -13,4 +13,5 @@ export interface ILeaderboardUser {
   hours: number;
   minutes: number;
   total_time: number;
+  hours_to_add: number;
 }

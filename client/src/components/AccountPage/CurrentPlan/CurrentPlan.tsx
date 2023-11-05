@@ -1,19 +1,27 @@
-import { useSelector } from "react-redux";
 import styles from "./CurrentPlan.module.scss";
-import { RootState } from "../../../redux/store";
 import {
   formatDuration,
   formatDurationText,
 } from "../../../helpers/data.helper";
+import { useLayoutEffect, useState } from "react";
+import { ApiService } from "../../../services/api.service";
 
 const CurrentPlan: React.FC = () => {
-  const plan = useSelector((state: RootState) => state.subscription.value);
+  const [plan, setPlan] = useState<any>();
+
+  useLayoutEffect(() => {
+    (async () => {
+      const { data } = await ApiService.getSubscriptionByUserAsync();
+      setPlan(data.subscription);
+    })();
+  }, []);
 
   return (
     <div className={styles.currPlan}>
-      <span className={styles.currPlan__span}>{plan?.name}Obican plan</span>
+      <span className={styles.currPlan__span}>{plan?.plan?.name}</span>
       <span className={`${styles.currPlan__bg}`}>
-        {formatDuration(50)} {formatDurationText(50)} preostalo
+        {formatDuration(plan?.time_left ?? 0)}{" "}
+        {formatDurationText(plan?.time_left ?? 0)} preostalo
       </span>
     </div>
   );

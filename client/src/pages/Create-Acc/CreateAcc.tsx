@@ -8,6 +8,10 @@ import {
   BsFill2CircleFill,
   BsFill3CircleFill,
 } from "react-icons/bs";
+import { ApiService } from "../../services/api.service";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/reducers/user.reducer";
+import { setAuthorizationHeader } from "../../common/axios";
 
 const CreateAcc: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("+381 ");
@@ -16,6 +20,8 @@ const CreateAcc: React.FC = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [privacy, setPrivacy] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
   const navigator = useNavigate();
 
   const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +43,22 @@ const CreateAcc: React.FC = () => {
     setPrivacy((prev) => !prev);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const { data } = await ApiService.createAsync({
+      last_name: lastName,
+      first_name: firstName,
+      email: email,
+      phone: phoneNumber,
+      password: password
+    });
+
+    localStorage.setItem(ApiService.IdentityKey, data.authorisation.token);
+    setAuthorizationHeader();
+
+    dispatch(setUser(data.user));
+
     navigator("/choose-subscription");
   };
 

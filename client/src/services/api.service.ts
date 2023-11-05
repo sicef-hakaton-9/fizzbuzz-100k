@@ -15,7 +15,7 @@ export class ApiService {
 
   public static async getInfoAsync(): Promise<IApiService<IAuthenticationInfoResponse>> {
     try {
-      const { data } = await AxiosAuthorized.get("/api/info");
+      const { data } = await AxiosAuthorized.get("/info");
       return { data, ok: true }
     } catch (error: any) {
       return { data: error.response.data[0], ok: false };
@@ -108,6 +108,42 @@ export class ApiService {
   public static async reserveBikeAsync(parkingLotId: number): Promise<IApiService<any>> {
     try {
       const { data } = await AxiosAuthorized.post(`/bikes/${parkingLotId}/reserve`);
+      return { data, ok: true };
+    } catch (error: any) {
+      return { data: error.message, ok: false };
+    }
+  }
+
+  public static async subscribeAsync(planId: number): Promise<IApiService<any>> {
+    try {
+      const { data } = await AxiosAuthorized.post(`/subscribe`, { plan_id: planId });
+      return { data, ok: true };
+    } catch (error: any) {
+      return { data: error.message, ok: false };
+    }
+  }
+
+  public static async getSubscriptionByUserAsync(): Promise<IApiService<any>> {
+    try {
+      const { data } = await AxiosAuthorized.get(`/user-subscription-status`);
+      return { data, ok: true };
+    } catch (error: any) {
+      return { data: error.message, ok: false };
+    }
+  }
+
+  public static async createAsync(request: any): Promise<IApiService<any>> {
+    try {
+      const { data } = await AxiosAuthorized.post(`/register`, request);
+      return { data, ok: true };
+    } catch (error: any) {
+      return { data: error.message, ok: false };
+    }
+  }
+
+  public static async reportProblemInRideAsync(comment: string): Promise<IApiService<any>> {
+    try {
+      const { data } = await AxiosAuthorized.patch(`/ride/report`, { comment });
       return { data, ok: true };
     } catch (error: any) {
       return { data: error.message, ok: false };

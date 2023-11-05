@@ -34,7 +34,7 @@
   padding: 0px 15px 0px 15px;
 }
 
-.payment-form input {
+.payment-form input, .payment-form textarea {
   border: 2px solid black;
   outline: none;
   padding: 9px;

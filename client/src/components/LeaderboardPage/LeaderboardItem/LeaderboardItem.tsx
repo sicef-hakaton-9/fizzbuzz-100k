@@ -7,6 +7,7 @@ interface LeaderboardItemProps {
   name: string;
   time: string;
   arrow: "up" | "down";
+  hours_to_add: any;
 }
 
 const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
@@ -14,6 +15,7 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
   name,
   time,
   arrow,
+  hours_to_add,
 }) => {
   return (
     <div
@@ -27,7 +29,7 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
           : styles.item__default
       }`}
     >
-      <div className={styles.item__group}>
+      <div className={styles.item__group} style={{ width: 20 }}>
         {arrow === "up" ? (
           <IoIosArrowUp size={20} color="var(--green)" />
         ) : (
@@ -39,7 +41,7 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
         <IoPersonCircleOutline size={36} />
         <span>{name}</span>
       </div>
-      <span>{time}</span>
+      <span style={{ width: 90 }}>{time} {hours_to_add !== 0 ?  (<b>+ {hours_to_add}</b>) : ""}</span>
     </div>
   );
 };

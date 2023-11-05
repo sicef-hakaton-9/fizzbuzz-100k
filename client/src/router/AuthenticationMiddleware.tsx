@@ -12,7 +12,7 @@ const AuthenticationMiddleware = () => {
       const response = await ApiService.getInfoAsync();
 
       if (response.ok && response.data !== null) {
-        dispatch(setUser(response.data));
+        dispatch(setUser(response.data.user));
         setAuthorizationHeader();
       }
       

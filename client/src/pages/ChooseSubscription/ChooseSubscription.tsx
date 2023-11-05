@@ -18,8 +18,9 @@ const ChooseSubscription: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubscription = (subscription: ISubscription) => {
+  const handleSubscription = async (subscription: ISubscription) => {
     dispatch(selectPlan(subscription));
+    await ApiService.subscribeAsync(subscription.id);
     navigate("/checkout");
   };
 

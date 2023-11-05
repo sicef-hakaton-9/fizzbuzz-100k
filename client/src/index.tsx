@@ -11,10 +11,10 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Provider store={store}>
-      {/* <AuthenticationMiddleware /> */}
+      <AuthenticationMiddleware />
       <AppRouter />
     </Provider>
-  </React.StrictMode>
+  </React.Fragment>
 );

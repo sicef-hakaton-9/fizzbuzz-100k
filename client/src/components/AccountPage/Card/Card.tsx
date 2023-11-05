@@ -35,7 +35,7 @@ const Card: React.FC = () => {
           <Button text="PROMENI PLAN" onClick={handleNavigateRoute} />
         </div>
         <div className={styles.card__btn}>
-          <Button revert={true} text="LOGOUT" onClick={handleNavigateRoute} />
+          <Button revert={true} text="ODJAVI SE" onClick={handleNavigateRoute} />
         </div>
       </div>
     </div>

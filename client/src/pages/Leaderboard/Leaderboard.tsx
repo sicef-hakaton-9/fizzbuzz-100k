@@ -20,7 +20,10 @@ const Leaderboard: React.FC = () => {
   useLayoutEffect(() => {
     (async () => {
       const { data } = await ApiService.getDashboardStatisticsAsync();
-      setUsers(data.users);
+
+      if (data) {
+        setUsers(data.users);
+      }
     })();
   }, []);
 
@@ -36,6 +39,7 @@ const Leaderboard: React.FC = () => {
             name={item.first_name + " " + item.last_name}
             arrow={i % 2 === 0 ? "up" : "down"}
             time={item.hours.toString()}
+            hours_to_add={item.hours_to_add}
           />
         ))}
       </main>
