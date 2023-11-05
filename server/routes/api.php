@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RideController;
 use App\Http\Controllers\BikeRentController;
 use App\Http\Controllers\ParkingLotController;
 use App\Http\Controllers\LeaderboardController;
@@ -25,11 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/register', [AuthController::class, 'register']);
+
 Route::middleware('auth:api')->group(function () {
 
     Route::get('/info', function (Request $request) {
         return response()->json([
-            'message' => 'info',
+            'status' => 'success',
+            'user' => $request->user(),
         ]);
     });
 
@@ -44,6 +48,8 @@ Route::middleware('auth:api')->group(function () {
 
     // Reserve a parking lot for the user when user is on a ride
     Route::post('/parking-lot/{parkingLot}/reserve', [ParkingLotController::class, 'reserve']);
+
+    Route::patch('/ride/report', [RideController::class, 'report']);
 
     Route::get('/subscription-plans', [SubcriptionController::class, 'getSubscriptionPlans']);
 
@@ -66,9 +72,9 @@ Route::middleware('auth:api')->group(function () {
         return response()->json([
             'status' => 'success',
             'hasActiveSubscription' => $user->hasActiveSubscription(),
+            'subscription' => $user->subscription->load('plan'),
         ]);
     });
-
 
     Route::get('/user-reservation-status', function (Request $request) {
         $user = $request->user();

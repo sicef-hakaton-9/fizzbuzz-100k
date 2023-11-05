@@ -35,7 +35,7 @@ class LeaderboardController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'users' => collect($users)->sortByDesc('total_time'),
+            'users' => collect($users)->sortByDesc('total_time')->values()->all(),
         ]);
     }
 

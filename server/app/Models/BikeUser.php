@@ -20,6 +20,7 @@ class BikeUser extends Pivot
         'ending_parking_lot_id',
         'starts_at',
         'ends_at',
+        'comment',
     ];
 
     /**
