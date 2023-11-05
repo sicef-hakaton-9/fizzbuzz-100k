@@ -6,6 +6,8 @@ Aplikacija nastala na devetom [SICEF Hakatonu](https://hakaton.sicef.info/), 24-
 
 Učesnici su imali zadatak da naprave **aplikaciju na temu „softverska podrška pametnim gradovima”**.
 
+Prezentacija aplikacije: https://prezi.com/view/Hi5D08pvLkaiLFtFgIKS/
+
 ## Članovi tima
 
 - [Dušan Veličković](https://github.com/dusanvelickovic)
