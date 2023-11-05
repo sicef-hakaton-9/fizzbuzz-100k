@@ -1,0 +1,46 @@
+.item {
+  display: flex;
+  align-items: center;
+  width: 85%;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-radius: 1.5rem;
+
+  &__group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__gold {
+    background: rgb(255, 207, 64);
+    background: radial-gradient(
+      circle,
+      rgba(255, 207, 64, 1) 0%,
+      rgba(255, 191, 0, 1) 100%
+    );
+  }
+
+  &__silver {
+    background: rgb(168, 169, 173);
+    background: radial-gradient(
+      circle,
+      rgba(#c2c3c6, 1) 0%,
+      rgba(#c4c5c9, 1) 100%
+    );
+  }
+
+  &__bronze {
+    background: rgb(144, 89, 33);
+    background: radial-gradient(
+      circle,
+      rgba(#b18b64, 1) 0%,
+      rgba(#b98d69, 1) 100%
+    );
+  }
+
+  &__default {
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,68 @@
+.closed-modal {
+  opacity: 0;
+  transition: 250ms ease-in-out;
+}
+
+.open-modal {
+  opacity: 1;
+  animation: 285ms fadeIn;
+}
+
+.hidden-modal {
+  display: none;
+}
+
+.swipe-up {
+  animation: 285ms swipeUp;
+}
+
+.swipe-down {
+  transform: translateY(100%);
+  transition: 250ms ease-in-out;
+}
+
+@keyframes swipeUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translate(0%);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 1000% !important;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  transition: 285ms ease-in-out;
+  z-index: 91;
+}
+
+.modal-content {
+  padding: 10px 0px;
+  background-color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  z-index: 92;
+  height: auto;
+  transition: 285ms ease-in-out;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

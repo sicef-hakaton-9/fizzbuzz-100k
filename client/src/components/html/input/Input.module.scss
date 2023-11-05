@@ -1,0 +1,22 @@
+.input {
+    width: 100%;
+    border: 2px solid var(--gray);
+    padding: 0.7rem 1rem;
+    border-collapse: collapse;
+    margin-top: -2px;
+  
+    &:focus {
+      outline: none;
+      border: 2px solid var(--purple);
+    }
+  
+    &__top {
+      border-top-left-radius: 0.7rem;
+      border-top-right-radius: 0.7rem;
+    }
+  
+    &__bottom {
+      border-bottom-left-radius: 0.7rem;
+      border-bottom-right-radius: 0.7rem;
+    }
+  }

@@ -1,0 +1,20 @@
+.start-ride {
+  width: 80%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 21px;
+  color: #fff;
+  background-color: var(--green);
+  border-radius: 25px;
+  position: fixed;
+  bottom: 50px;
+  z-index: 5;
+  display: flex;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+}
+
+.end-drive {
+  background-color: var(--red) !important;
+}

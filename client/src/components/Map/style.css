@@ -1,0 +1,73 @@
+.scheduler-sheet h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.scheduler-sheet {
+  display: flex;
+  z-index: 99;
+}
+
+.sheet-block {
+  width: 50%;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: var(--gray);
+}
+
+.sheet-block h2 {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.action-sheet-button {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  color: #ffff;
+  background-color: var(--purple);
+  border-radius: 25px;
+  margin-top: 25px;
+}
+
+.bike-code {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 23px;
+  font-weight: bold;
+  background-color: var(--gray);
+  border-radius: 8px;
+  width: 270px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.waiting-headline:first-of-type {
+  margin-top: 15px;
+}
+
+.waiting-headline {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.start-action {
+  background-color: var(--green) !important;
+}
+
+.end-action {
+  background-color: var(--red) !important;
+}
+
+.enter-code {
+  border: 2px solid black;
+  outline: none;
+  padding: 9px;
+  font-size: 17px;
+  border-radius: 3px;
+  margin-top: 8px;
+}

@@ -1,0 +1,24 @@
+.sign_in {
+  width: 80%;
+
+  &__btn {
+    width: 100%;
+    background-color: red;
+    margin: 2rem 0;
+    border-radius: 1rem;
+
+    background: rgb(250, 10, 50);
+    background: linear-gradient(
+      90deg,
+      rgba(250, 10, 50, 1) 0%,
+      rgba(215, 4, 102, 1) 100%
+    );
+
+    color: white;
+    padding: 1rem;
+  }
+
+  &__create {
+    margin-top: 5rem;
+  }
+}
